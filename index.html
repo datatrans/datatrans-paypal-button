@@ -340,6 +340,19 @@ PayPalButton.on("authorization", function (data) {
         $(".console-content").append("authorization response:" + "<br>" + JSON.stringify(response) + "<br>");
       });
       PayPalButton.on("error", function (error) {
+        
+        $("#paybutton").empty();
+        createAlias = false;
+        amount = "100";
+        document.getElementById("amount").value = "100"
+        document.getElementById("createAlias").checked = false;
+        PayPalButton.init({
+          merchantId: '1100025160',
+          reqType: 'CAA',
+          currencyCode: currency,
+          amount: amount,
+          createAlias: createAlias
+        });
         $(".console-content").append("Error:" + JSON.stringify(error) + "<br>")
       })
     </script>
