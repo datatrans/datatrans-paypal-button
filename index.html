@@ -298,6 +298,9 @@ PayPalButton.on("authorization", function (data) {
 
           if (data.target.id === "createAlias") {
             createAlias = data.target.checked;
+            amount = "0";
+            document.getElementById('amount').value = "0";
+
             PayPalButton.init({
               merchantId: '1100025160',
               reqType: 'CAA',
@@ -334,26 +337,30 @@ PayPalButton.on("authorization", function (data) {
 
       });
 
-      PayPalButton.on("init", function () { $(".console-content").append("init event dispatched <br>"); PayPalButton.create(document.getElementById('paybutton'), paypalConfig) });
-      PayPalButton.on("create", function () { $(".console-content").append("create event dispatched <br>") });
+      PayPalButton.on("init", function () { appendToConsole("init event dispatched <br>"); PayPalButton.create(document.getElementById('paybutton'), paypalConfig) });
+      PayPalButton.on("create", function () { appendToConsole("create event dispatched <br>") });
       PayPalButton.on("authorization", function (response) {
-        $(".console-content").append("authorization response:" + "<br>" + JSON.stringify(response) + "<br>");
+        appendToConsole("authorization response:" + "<br>" + JSON.stringify(response) + "<br>");
       });
       PayPalButton.on("error", function (error) {
         
         $("#paybutton").empty();
-        createAlias = false;
-        amount = "100";
-        document.getElementById("amount").value = "100"
-        document.getElementById("createAlias").checked = false;
-        PayPalButton.init({
-          merchantId: '1100025160',
-          reqType: 'CAA',
-          currencyCode: currency,
-          amount: amount,
-          createAlias: createAlias
-        });
-        $(".console-content").append("Error:" + JSON.stringify(error) + "<br>")
-      })
+          createAlias = false;
+          amount = "100";
+          document.getElementById("amount").value = "100"
+          document.getElementById("createAlias").checked = false;
+          PayPalButton.init({
+            merchantId: '1100025160',
+            reqType: 'CAA',
+            currencyCode: currency,
+            amount: amount,
+            createAlias: createAlias
+          });
+          appendToConsole("Error:" + JSON.stringify(error) + "<br>")
+      });
+
+      function appendToConsole(content){
+        $(".console-content").append(content);
+      }
     </script>
 </body>
