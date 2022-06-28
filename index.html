@@ -59,6 +59,12 @@
                       <i class="form-icon"></i> Request Address
                     </label>
                   </div>
+                  <div class="form-group col-xs-6 col-4">
+                    <label class="form-switch form-inline">
+                      <input type="checkbox" id="payLater">
+                      <i class="form-icon"></i> Enable pay later
+                    </label>
+                  </div>
                   <div class="form-group col-4">
                     <label class="form-label" for="amount">Amount</label>
                     <input class="form-input" type="text" pattern="[0-9]*" id="amount" placeholder="100">
@@ -155,7 +161,7 @@ PayPalButton.on("authorization", function (data) {
               <div class="columns reference" id="reference">
                 <div class="col-md-6 col-xs-12 column">
                   <h4>Events</h4>
-                  Following events will be emmited by the library
+                  Following events will be emitted by the library
                   <ul>
                     <li><b>init</b> - emitted when the library is initialized and ready to use</li>
                     <li><b>create</b> - emitted when payment button is rendered</li>
@@ -202,6 +208,24 @@ PayPalButton.on("authorization", function (data) {
                       <td colspan="2">Whether to create an alias (only allowed for zero amount authorizations)
                       </td>
                       <td>boolean</td>
+                    </tr>
+                    <tr>
+                      <td>paypalMerchantId</td>
+                      <td colspan="2">Your paypal merchant id
+                      </td>
+                      <td>boolean</td>
+                    </tr>
+                    <tr>
+                      <td>enablePayLater</td>
+                      <td colspan="2">Enable PayPal pay later (default:false)
+                      </td>
+                      <td>boolean</td>
+                    </tr>
+                    <tr>
+                      <td>buyerCountry</td>
+                      <td colspan="2">Set the buyer country (iso-alpha-2) for test purposes (sandbox only)
+                      </td>
+                      <td>String</td>
                     </tr>
                     <tr>
                       <td>PayPal Options</td>
@@ -257,6 +281,8 @@ PayPalButton.on("authorization", function (data) {
       let currency = "CHF";
       let requestAddress = false;
       let createAlias = false;
+      let buyerCountry = "DE"
+      let enablePayLater = false;
 
       const paypalConfig = {
         paypaloptions: {
@@ -307,6 +333,22 @@ PayPalButton.on("authorization", function (data) {
               currencyCode: currency,
               amount: amount,
               createAlias: createAlias
+            });
+          }
+
+          if (data.target.id === "payLater") {
+            enablePayLater = data.target.checked;
+           
+
+            PayPalButton.init({
+              merchantId: '1100025160',
+              reqType: 'CAA',
+              currencyCode: currency,
+              amount: amount,
+              createAlias: createAlias,
+              enablePayLater: enablePayLater,
+              buyerCountry: buyerCountry,
+              paypalMerchantId:"PTSMZTZ978TUU"
             });
           }
 
