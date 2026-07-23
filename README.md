@@ -6,31 +6,29 @@ Render PayPal buttons for payments via Datatrans.
 
 ```js
 PayPalButton.init({
- merchantId: '1100025160',
- reqType: 'CAA',
- currencyCode: 'CHF',
- amount: '100',
- createAlias: false
+  merchantId: '1100025160',
+  reqType: 'CAA',
+  currencyCode: 'CHF',
+  amount: '100',
+  createAlias: false
 });
 
-PayPalButton.on('init', function () {
-	$('.console-content').append('init event dispatched <br>')
-	PayPalButton.create(document.getElementById('paybutton'), paypalOptions)
-})
+PayPalButton.on('init', function() {
+  console.log('init event dispatched');
+  PayPalButton.create(document.getElementById('paybutton'), paypalOptions);
+});
 
-PayPalButton.on('create', function () {
-  $('.console-content').append('create event dispatched <br>')
-})
+PayPalButton.on('create', function() {
+  console.log('create event dispatched');
+});
 
-PayPalButton.on('authorization', function (response) {
-  $('.console-content').append('authorization response:' + '<br>' + response + '<br>')
-})
+PayPalButton.on('authorization', function(response) {
+  console.log('authorization response:', response);
+});
 
-
-PaymentButton.on('error', function (error) {
-  $('.console-content').append('Error:' + JSON.stringify(error) + '<br>')
- })
-
+PaymentButton.on('error', function(error) {
+  console.log('Error:', JSON.stringify(error));
+});
 ```
 
 ## Events
