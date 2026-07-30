@@ -9,11 +9,6 @@
   <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-exp.min.css">
   <link rel="stylesheet" href="https://unpkg.com/spectre.css/dist/spectre-icons.min.css">
   <link rel="stylesheet" href="css/paypal.css" />
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
-  <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#213d62">
-  <link rel="shortcut icon" href="icons/favicon.ico">
   <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8=" crossorigin="anonymous"></script>
   <title>Payment Button Showcase</title>
@@ -35,15 +30,15 @@
       <div class="col-12 column">
         <div class="content">
           <div class="intro" id="intro">
-            <h2>Datatrans PayPal Button </h2>
+            <h2>Datatrans PayPal Button</h2>
             <p>This library is meant to support Datatrans merchants in rendering the <a
-                href="https://developer.paypal.com/docs/checkout/">PayPal Smart Button </a>. It acts as a wrapper and
+                href="https://developer.paypal.com/docs/checkout/">PayPal Smart Button</a>. It acts as a wrapper and
               implements all required operations for checkout with PayPal directly from the merchant checkout page.
             </p>
           </div>
           <div class="divider"></div>
           <div class="demo" id="demo">
-            <h3>Configure and test the example </h3>
+            <h3>Configure and test the example</h3>
             <div class="columns">
               <div class="col-md-6 col-xs-12 column">
                 <form class="form-horizontal" id="configForm">
@@ -77,10 +72,14 @@
                       <option value="EUR">EUR</option>
                     </select>
                   </div>
+                  <div class="form-group col-4">
+                    <label class="form-label" for="version">Transaction API version</label>
+                    <select class="form-select" id="version">
+                      <option value="1" selected>1</option>
+                      <option value="2">2</option>
+                    </select>
+                  </div>
                 </form>
-
-
-
               </div>
 
               <div class="column col-md-5 col-xs-12">
@@ -92,9 +91,8 @@
                 <div class="divider"></div>
                 <div id="paybutton"></div>
               </div>
+
             </div>
-
-
           </div>
           <div class="divider"></div>
           <div class="howto" id="howto">
@@ -103,55 +101,49 @@
               <div class="col-12 column">
                 <h4>1) Initialize the library</h4>
                 <pre class="code" data-lang="JS">
-                  <code>
-&lt;script src="https://pay.sandbox.datatrans.com/upp/payment/js/paypal-button-1.0.0.js" type="text/javascript"&gt;&lt;/script&gt;</code>
+                  <code>&lt;script src="https://pay.sandbox.datatrans.com/upp/payment/js/paypal-button-1.0.0.js" type="text/javascript"&gt;&lt;/script&gt;</code>
                 </pre>
                 <pre class="code" data-lang="JS">
-                  <code>
-PayPalButton.init({
- merchantId: '1100025160',
- reqType: 'CAA',
- currencyCode: 'CHF',
- amount: '100',
- createAlias: false
-});
-                  </code>
+                  <code>PayPalButton.init({
+  merchantId: '1100025160',
+  reqType: 'CAA',
+  currencyCode: 'CHF',
+  amount: '100',
+  createAlias: false
+});</code>
                 </pre>
               </div>
               <div class="col-12 column">
                 <h4>2) Listen for the init event and create the button</h4>
                 <pre class="code" data-lang="JS">
-                  <code>
-const configuration = {
- paypaloptions: {
-   button: {
-    layout: 'vertical',
-    color: 'blue',
-    shape: 'rect',
-    label: 'paypal'
-   }
-  }, 
+                  <code>const configuration = {
+  paypaloptions: {
+    button: {
+      layout: 'vertical',
+      color: 'blue',
+      shape: 'rect',
+      label: 'paypal'
+    }
+  },
   transaction: { 
-   refno: myReferenceNumber,
-   authenticationOnly: false,
-   returnAddress: true 
+    refno: myReferenceNumber,
+    authenticationOnly: false,
+    returnAddress: true,
+    version: 1
   }
-}
-                
-PayPalButton.on("init", function () {
- PayPalButton.create(document.getElementById("paypalbutton"), configuration);
-})
-                  </code>
+};
+
+PayPalButton.on('init', function() {
+  PayPalButton.create(document.getElementById('paypalbutton'), configuration);
+});</code>
                 </pre>
               </div>
               <div class="col-12 column">
                 <h4>3) Listen for the authorization event and continue</h4>
                 <pre class="code" data-lang="JS">
-                    <code>
-PayPalButton.on("authorization", function (data) {
+                    <code>PayPalButton.on('authorization', function(data) {
   // handle transaction result
-});
-                    </code>
+});</code>
                   </pre>
               </div>
             </div>
@@ -182,188 +174,108 @@ PayPalButton.on("authorization", function (data) {
                     </tr>
                     <tr>
                       <td>merchantId</td>
-                      <td colspan="2">Your datatrans merchantId</td>
+                      <td colspan="2">Your Datatrans merchantId</td>
                       <td>String</td>
                     </tr>
                     <tr>
                       <td>currencyCode</td>
-                      <td colspan="2">Transaction Currency, 3 letter currency code (ISO 4217)
-                      </td>
+                      <td colspan="2">Transaction Currency, 3 letter currency code (ISO 4217)</td>
                       <td>String</td>
                     </tr>
                     <tr>
                       <td>amount</td>
-                      <td colspan="2">Transaction Amount
-                      </td>
+                      <td colspan="2">Transaction Amount</td>
                       <td>String</td>
                     </tr>
                     <tr>
-                      <td>reqtype</td>
-                      <td colspan="2">Request type CAA (direct debit) or NOA (authorization)
-                      </td>
+                      <td>reqType</td>
+                      <td colspan="2">Request type CAA (direct debit) or NOA (authorization)</td>
                       <td>String</td>
                     </tr>
                     <tr>
                       <td>createAlias</td>
-                      <td colspan="2">Whether to create an alias (only allowed for zero amount authorizations)
-                      </td>
-                      <td>boolean</td>
+                      <td colspan="2">Whether to create an alias (only allowed for zero amount authorizations)</td>
+                      <td>Boolean</td>
                     </tr>
                     <tr>
                       <td>paypalMerchantId</td>
-                      <td colspan="2">Your paypal merchant id
-                      </td>
-                      <td>boolean</td>
+                      <td colspan="2">Your PayPal merchant id</td>
+                      <td>String</td>
                     </tr>
                     <tr>
                       <td>enablePayLater</td>
-                      <td colspan="2">Enable PayPal pay later (default:false)
-                      </td>
-                      <td>boolean</td>
+                      <td colspan="2">Enable PayPal pay later (default:false)</td>
+                      <td>Boolean</td>
                     </tr>
                     <tr>
                       <td>buyerCountry</td>
-                      <td colspan="2">Set the buyer country (iso-alpha-2) for test purposes (sandbox only)
-                      </td>
+                      <td colspan="2">Set the buyer country (iso-alpha-2) for test purposes (sandbox only)</td>
                       <td>String</td>
                     </tr>
                     <tr>
                       <td>PayPal Options</td>
-                      <td colspan="2">Button styling configuration see <a
-                          href="https://developer.paypal.com/docs/checkout/integration-features/customize-button/">Customize
-                          the PayPal buttons</a>
+                      <td colspan="2">
+                        Button styling configuration see <a
+                        href="https://developer.paypal.com/docs/checkout/integration-features/customize-button/">Customize
+                        the PayPal buttons</a>
                       </td>
                       <td>Object</td>
                     </tr>
                     <tr>
-                      <td rowspan="4">Transaction Object</td>
+                      <td rowspan="5">Transaction Object</td>
                       <th>Option</th>
                       <th>Description</th>
                       <th>Type</th>
                     </tr>
                     <tr>
                       <td>refno</td>
-                      <td>Your reference number. Find out more <a
-                          href="https://api-reference.datatrans.ch/#mandatory-parameters">here</a>
+                      <td>
+                        Your reference number. Find out more <a
+                        href="https://api-reference.datatrans.ch/#mandatory-parameters">here</a>
                       </td>
                       <td>String</td>
                     </tr>
                     <tr>
                       <td>returnAddress</td>
-                      <td>Whether to return the customer address to the Webhook
-                      </td>
-                      <td>boolean</td>
+                      <td>Whether to return the customer address to the Webhook</td>
+                      <td>Boolean</td>
                     </tr>
                     <tr>
                       <td>authenticationOnly</td>
-                      <td>Only authenticate the transaction (used for deferred authorization)
+                      <td>Only authenticate the transaction (used for deferred authorization)</td>
+                      <td>Boolean</td>
+                    </tr>
+                    <tr>
+                      <td>version</td>
+                      <td>
+                        <div>Transaction API version. Default: 1</div>
+                        <div>Allowed values: 1 | 2</div>
                       </td>
-                      <td>boolean</td>
+                      <td>Number</td>
                     </tr>
                   </table>
                 </div>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
+  </div>
+  <script>
+  let amount = '100';
+  let currency = 'CHF';
+  let requestAddress = false;
+  let createAlias = false;
+  let buyerCountry = 'DE';
+  let enablePayLater = false;
+  let version = 1;
 
+  $(document).ready(function() {
+    $('#configForm').change(function(data) {
 
-
-
-    <script>
-
-      let amount = '100';
-      let currency = "CHF";
-      let requestAddress = false;
-      let createAlias = false;
-      let buyerCountry = "DE"
-      let enablePayLater = false;
-
-      const paypalConfig = {
-        paypaloptions: {
-
-        },
-        transaction: {
-          refno: 'rand' + new Date().getTime(),
-          authenticationOnly: false,
-          returnAddress: requestAddress
-        }
-      }
-
-      $(document).ready(function () {
-        $("#configForm").change(function (data) {
-
-          if (data.target.id === "amount") {
-            amount = data.target.value;
-
-            PayPalButton.init({
-              merchantId: '1100025160',
-              reqType: 'CAA',
-              currencyCode: currency,
-              amount: amount,
-              createAlias: createAlias
-            });
-          }
-
-          if (data.target.id === "currency") {
-            currency = data.target.value;
-
-            PayPalButton.init({
-              merchantId: '1100025160',
-              reqType: 'CAA',
-              currencyCode: currency,
-              amount: amount,
-              createAlias: createAlias
-            });
-          }
-
-          if (data.target.id === "createAlias") {
-            createAlias = data.target.checked;
-            amount = "0";
-            document.getElementById('amount').value = "0";
-
-            PayPalButton.init({
-              merchantId: '1100025160',
-              reqType: 'CAA',
-              currencyCode: currency,
-              amount: amount,
-              createAlias: createAlias
-            });
-          }
-
-          if (data.target.id === "payLater") {
-            enablePayLater = data.target.checked;
-           
-
-            PayPalButton.init({
-              merchantId: '1100025160',
-              reqType: 'CAA',
-              currencyCode: currency,
-              amount: amount,
-              createAlias: createAlias,
-              enablePayLater: enablePayLater,
-              buyerCountry: buyerCountry,
-              paypalMerchantId:"PTSMZTZ978TUU"
-            });
-          }
-
-          if (data.target.id === "requestAddress") {
-            requestAddress = data.target.checked;
-            PayPalButton.init({
-              merchantId: '1100025160',
-              reqType: 'CAA',
-              currencyCode: currency,
-              amount: amount,
-              createAlias: createAlias
-            });
-          }
-
-        });
+      if (data.target.id === 'amount') {
+        amount = data.target.value;
 
         PayPalButton.init({
           merchantId: '1100025160',
@@ -372,37 +284,120 @@ PayPalButton.on("authorization", function (data) {
           amount: amount,
           createAlias: createAlias
         });
-
-        $("#clearButton").click(function () {
-          $(".console-content").empty();
-        });
-
-      });
-
-      PayPalButton.on("init", function () { appendToConsole("init event dispatched <br>"); PayPalButton.create(document.getElementById('paybutton'), paypalConfig) });
-      PayPalButton.on("create", function () { appendToConsole("create event dispatched <br>") });
-      PayPalButton.on("authorization", function (response) {
-        appendToConsole("authorization response:" + "<br>" + JSON.stringify(response) + "<br>");
-      });
-      PayPalButton.on("error", function (error) {
-        
-        $("#paybutton").empty();
-          createAlias = false;
-          amount = "100";
-          document.getElementById("amount").value = "100"
-          document.getElementById("createAlias").checked = false;
-          PayPalButton.init({
-            merchantId: '1100025160',
-            reqType: 'CAA',
-            currencyCode: currency,
-            amount: amount,
-            createAlias: createAlias
-          });
-          appendToConsole("Error:" + JSON.stringify(error) + "<br>")
-      });
-
-      function appendToConsole(content){
-        $(".console-content").append(content);
       }
-    </script>
+
+      if (data.target.id === 'currency') {
+        currency = data.target.value;
+
+        PayPalButton.init({
+          merchantId: '1100025160',
+          reqType: 'CAA',
+          currencyCode: currency,
+          amount: amount,
+          createAlias: createAlias
+        });
+      }
+
+      if (data.target.id === 'version') {
+        version = Number(data.target.value);
+
+        PayPalButton.init({
+          merchantId: '1100025160',
+          reqType: 'CAA',
+          currencyCode: currency,
+          amount: amount,
+          createAlias: createAlias
+        });
+      }
+
+      if (data.target.id === 'createAlias') {
+        createAlias = data.target.checked;
+        amount = '0';
+        document.getElementById('amount').value = '0';
+
+        PayPalButton.init({
+          merchantId: '1100025160',
+          reqType: 'CAA',
+          currencyCode: currency,
+          amount: amount,
+          createAlias: createAlias
+        });
+      }
+
+      if (data.target.id === 'payLater') {
+        enablePayLater = data.target.checked;
+
+        PayPalButton.init({
+          merchantId: '1100025160',
+          reqType: 'CAA',
+          currencyCode: currency,
+          amount: amount,
+          createAlias: createAlias,
+          enablePayLater: enablePayLater,
+          buyerCountry: buyerCountry,
+          paypalMerchantId: 'PTSMZTZ978TUU'
+        });
+      }
+
+      if (data.target.id === 'requestAddress') {
+        requestAddress = data.target.checked;
+
+        PayPalButton.init({
+          merchantId: '1100025160',
+          reqType: 'CAA',
+          currencyCode: currency,
+          amount: amount,
+          createAlias: createAlias
+        });
+      }
+    });
+
+    PayPalButton.init({
+      merchantId: '1100025160',
+      reqType: 'CAA',
+      currencyCode: currency,
+      amount: amount,
+      createAlias: createAlias
+    });
+
+    $('#clearButton').click(function() {
+      $('.console-content').empty();
+    });
+  });
+
+  PayPalButton.on('init', function() {
+    const paypalConfig = {
+      paypaloptions: {},
+      transaction: {
+        refno: 'rand' + new Date().getTime(),
+        authenticationOnly: false,
+        returnAddress: requestAddress,
+        version: version,
+      }
+    };
+    appendToConsole('init event dispatched');
+    PayPalButton.create(document.getElementById('paybutton'), paypalConfig);
+  });
+  PayPalButton.on('create', function() {
+    appendToConsole('create event dispatched');
+  });
+  PayPalButton.on('authorization', function(response) {
+    appendToConsole('authorization response:' + '<br>' + JSON.stringify(response));
+  });
+  PayPalButton.on('error', function(error) {
+    $('#paybutton').empty();
+
+    createAlias = false;
+    amount = '100';
+    document.getElementById('amount').value = '100'
+    document.getElementById('createAlias').checked = false;
+
+    appendToConsole('Error:' + JSON.stringify(error))
+  });
+
+  function appendToConsole(content){
+    $('.console-content').append(`${content}<br/>`);
+  }
+  </script>
 </body>
+</html>
